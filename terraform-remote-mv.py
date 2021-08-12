@@ -2,21 +2,25 @@
 
 import os, sys, subprocess
 
+usage_doc = """
+USAGE : ./terraform-remote-mv.py /path/to/source/config /path/to/dest/config type1.resource1 type2.resource2 type3.resource3 [...]
+
+
+`terraform state mv` cannot move resources from one remote tfstate to another, requiring you to fiddle with local tfstates.
+This script does exactly that.
+
+Please note that since terraform doesn't support manually locking the state (https://github.com/hashicorp/terraform/issues/17203),
+we can't do this in a safe way. You'll have to ensure yourself nobody modifies any of the remote states while this script runs.
+Or, if unlike me, you use terraform directly (not trough an external tool such as terragrunt), you might want to give a try to
+https://github.com/minamijoyo/tflock
+
+If trying to move complex structures, be careful not to let your shell eat brackets or string delimitors, you might want to do :
+`terraform state list | grep SOMETHING | sed "s/^/'/;s/$/'/" | xargs ./terraform-remote-mv.py /path/a /path/b`
+"""
+
 if len(sys.argv) < 4:
 
-    print("")
-    print("USAGE : ./terraform-remote-mv.py /path/to/source/config /path/to/dest/config type1.resource1 type2.resource2 type3.resource3 [...]")
-    print("")
-
-    print("`terraform state mv` cannot move resources from one remote tfstate to another, requiring you to fiddle with local tfstates.")
-    print("This script does exactly that.")
-    print("")
-    print("Please note that since terraform doesn't support manually locking the state (https://github.com/hashicorp/terraform/issues/17203),")
-    print("we can't do this in a safe way. You'll have to ensure yourself nobody modifies any of the remote states while this script runs.")
-    print("")
-    print("If trying to move complex structures, be careful not to let your shell eat brackets or string delimitors, you might want to do :")
-    print("""terraform state list | grep SOMETHING | sed "s/^/'/;s/$/'/" | xargs ./terraform-remote-mv.py /path/a /path/b""")
-    sys.exit("Not enough arguments")
+    sys.exit(usage_doc)
 
 source_config_path = os.path.abspath(sys.argv[1])
 dest_config_path = os.path.abspath(sys.argv[2])
