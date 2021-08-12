@@ -18,31 +18,33 @@ This script does exactly that.
 
 ## Install
 
-The install not too complicated :
+The install is not too complicated :
 ```
 git clone https://github.com/toadjaune/terraform-remote-mv
 ```
 
 The script has no dependencies besides python >= 3.5, which you most likely already have on your machine.
 
-Then run the script with :
+Then run it with :
 ```
 cd terraform-remote-mv
 ./terraform-remote-mv.py
 ```
+
+Now go read the rest of this README before letting it touch your terrafrom states.
 
 ## Caveats and limitations
 
 Disclaimer : This is a very simple script, hacked together to help me solve what I think is a very common problem, so I thought I'd share it.
 It wasn't extensively tested, and certainly isn't a compendium of good programming practices, so make sure to test it before using it on something too important.
 
-The script leaves behind a myriad of tfstate files, to leave you the possibility of recovering data in case of problem. Those contain any sensitive info present in your tfsates, so, make sure to clean them up properly.
+The script leaves behind a myriad of tfstate files in the working directory, to leave you the possibility of recovering data in case of problem. Those contain any sensitive info present in your tfsates, so, make sure to clean them up properly. And not to commit them.
 
 ### State locking
 
-Ideally, we would want to start locking the remote states, do everything we need, then release the locks.
+Ideally, we would want to start by locking the remote states, do everything we need, then release the locks.
 
-Since terraform doesn't support manually locking the state (https://github.com/hashicorp/terraform/issues/17203), by design, we can't to that.
+Since terraform doesn't support manually locking the state (https://github.com/hashicorp/terraform/issues/17203), by design, we can't do that.
 
 This means you'll have to ensure yourself nobody modifies any of the remote states while this script runs.
 
@@ -50,4 +52,5 @@ This means you'll have to ensure yourself nobody modifies any of the remote stat
 Or, if unlike me, you use terraform directly (not trough an external tool such as terragrunt), you might want to give a try to https://github.com/minamijoyo/tflock.
 That's still going to depend on your state storage backend.
 
-Either way, make sure you understand the implications before using this script, or you might lose data.
+Either way, make sure you understand the implications of the lack of locking before using this script, or you might lose data.
+
