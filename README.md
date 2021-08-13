@@ -49,7 +49,7 @@ Since terraform doesn't support manually locking the state (https://github.com/h
 This means you'll have to ensure yourself nobody modifies any of the remote states while this script runs.
 
 
-Or, if unlike me, you use terraform directly (not trough an external tool such as terragrunt), you might want to give a try to https://github.com/minamijoyo/tflock.
+Or, if unlike me, you use terraform directly (not through an external tool such as terragrunt), you might want to give a try to https://github.com/minamijoyo/tflock.
 That's still going to depend on your state storage backend.
 
 Either way, make sure you understand the implications of the lack of locking before using this script, or you might lose data.
