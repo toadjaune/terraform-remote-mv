@@ -51,5 +51,5 @@ subprocess.run(["terraform", "state", "push", current_path + "/source.tfstate"],
 print(f"Pushing back ./dest.tfstate to {dest_config_path} remote state")
 subprocess.run(["terraform", "state", "push", current_path + "/dest.tfstate"], cwd=dest_config_path, check=True)
 
-print(f"Resource migration complete !")
-print(f"NB : local tfstates and their backups are not deleted, to allow you to recover in case of issue")
+print("Resource migration complete !")
+print("NB : local tfstates and their backups are not deleted, to allow you to recover in case of issue")
